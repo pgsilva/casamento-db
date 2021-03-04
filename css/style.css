@@ -53,7 +53,13 @@ h6 {
 }
 
 h1 {
-    font-size: 24px
+    font-size: 136px !important
+}
+
+@media only screen and (max-width: 600px) {
+	h1 {
+		font-size: 36px !important
+	}
 }
 
 h2 {
@@ -453,7 +459,7 @@ button:focus{
 }
 .about-main-info h2 span{
 	color: #dd666c;
-	text-decoration: underline;
+	/*text-decoration: underline;*/
 }
 
 
