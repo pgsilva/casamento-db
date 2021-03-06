@@ -754,6 +754,33 @@ button:focus{
 	background-color: #dd666c;
 }
 
+.mercadopago-button:hover{
+	background-color: #dd666c !important;
+}
+
+.mercadopago-button {
+	background-color: #63c7bd !important;
+	height: 45px !important;
+	line-height: 45px !important;
+	font-size: 16px !important;
+	font-weight: 600 !important;
+	color: #fff !important;
+	padding: 0 15px !important;
+	border: 0 !important;
+	outline: 0 !important;
+	text-transform: uppercase !important;
+	-webkit-border-radius: 3px !important;
+	-moz-border-radius: 3px !important;
+	-o-border-radius: 3px !important;
+	-ms-border-radius: 3px !important;
+	border-radius: 3px !important;
+	-webkit-transition: all 0.3s !important;
+	-moz-transition: all 0.3s !important;
+	-o-transition: all 0.3s !important;
+	-ms-transition: all 0.3s !important;
+	transition: all 0.3s !important;
+}
+
 .custom-select{
 	height: 45px;
 	font-size: 16px;
