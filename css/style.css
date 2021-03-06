@@ -451,7 +451,7 @@ button:focus{
 }
 .title-box h2 span{
 	color: #dd666c;
-	text-decoration: underline;
+	/*text-decoration: underline;*/
 }
 .about-main-info h2{
 	font-size: 40px;
