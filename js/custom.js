@@ -5,7 +5,7 @@
 		OAuth Init 
 		................................................. */
 	$(window).on('load', function () {
-		fetch(getUri() + "user/auth/register", {
+		fetch("https://api-casamento-db.herokuapp.com/user/auth/register", {
 			method: "POST",
 			mode: 'cors',
 			cache: 'default',
@@ -107,7 +107,7 @@
 				};
 				console.log(orderData)
 
-				fetch(getUri() + "cash/create_preference", {
+				fetch("https://api-casamento-db.herokuapp.com/cash/create_preference", {
 					method: "POST",
 					mode: 'cors',
 					cache: 'default',
