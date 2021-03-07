@@ -1,11 +1,10 @@
 (function ($) {
 	"use strict";
-
+	localStorage.setItem('status_server', false)
 	/* ..............................................
 		OAuth Init 
 		................................................. */
 	$(window).on('load', function () {
-		console.log("teste")
 		fetch(getUri() + "user/auth/register", {
 			method: "POST",
 			mode: 'cors',
@@ -13,17 +12,20 @@
 			headers: {
 				"Content-Type": "application/json",
 			},
-			body: JSON.stringify({
-				user: "pgsilva0698@gmail.com",
-				senha: "123"
-			}),
+			body: JSON.stringify({}),
 		}).then(function (response) {
-			return response.json();
+			if (response.status == 200) {
+				return response.json();
+			} else {
+				throw Error("Erro http")
+			}
 		}).then(function (res) {
 			console.log("Token recebido com sucesso!")
-			localStorage.setItem('client', JSON.stringify(res))
+			//status server
+			localStorage.setItem('status_server', true)
+			localStorage.setItem('client', JSON.stringify(res.user))
 		}).catch(function () {
-			alert("Unexpected error OAuth");
+			console.log("Unexpected error OAuth");
 		});
 	});
 
@@ -65,7 +67,17 @@
 	................................................. */
 
 	$(document).ready(function () {
+		$('#status_server').css("display", "none");
 		$('#processando').css("display", "none");
+
+		setTimeout(() => {
+			var status_server = JSON.parse(localStorage.getItem('status_server'))
+			if (!status_server) {
+				$('#submit').css("display", "none");
+				$('#status_server').css("display", "block");
+			}
+		}, 500);
+
 
 		$('.popup-gallery').magnificPopup({
 			delegate: 'a',
@@ -96,7 +108,7 @@
 			$('#processando').css("display", "block");
 			$('#submit').css("display", "none");
 
-
+			var client = JSON.parse(localStorage.getItem('client'))
 			var x = $("#money").val().replace("R$ ", "");
 			var orderData = {
 				quantity: 1,
@@ -111,13 +123,19 @@
 				cache: 'default',
 				headers: {
 					"Content-Type": "application/json",
+					"Authorization": "Bearer " + client.token
 				},
 				body: JSON.stringify(orderData),
 			}).then(function (response) {
-				return response.json();
+				if (response.status == 200) {
+					return response.json();
+				} else {
+					throw Error("Erro http")
+				}
 			}).then(function (preference) {
 				createCheckoutButton(preference.id);
-			}).catch(function () {
+			}).catch(function (err) {
+				console.log(err)
 				alert("Unexpected error");
 				$('#submit').css("display", "block");
 				$('#button-checkout').css("display", "none");
