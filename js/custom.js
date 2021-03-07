@@ -96,7 +96,7 @@
 		});
 
 		$('form#contactForm').submit(function () {
-			JSON.parse(localStorage.getItem('status_server'))
+			var status_server = JSON.parse(localStorage.getItem('status_server'))
 			if (status_server) {
 				var client = JSON.parse(localStorage.getItem('client'))
 				var x = $("#money").val().replace("R$ ", "");
