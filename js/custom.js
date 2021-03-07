@@ -70,15 +70,6 @@
 		$('#status_server').css("display", "none");
 		$('#processando').css("display", "none");
 
-		setTimeout(() => {
-			var status_server = JSON.parse(localStorage.getItem('status_server'))
-			if (!status_server) {
-				$('#submit').css("display", "none");
-				$('#status_server').css("display", "block");
-			}
-		}, 1500);
-
-
 		$('.popup-gallery').magnificPopup({
 			delegate: 'a',
 			type: 'image',
@@ -105,42 +96,44 @@
 		});
 
 		$('form#contactForm').submit(function () {
-			$('#processando').css("display", "block");
-			$('#submit').css("display", "none");
+			JSON.parse(localStorage.getItem('status_server'))
+			if (status_server) {
+				var client = JSON.parse(localStorage.getItem('client'))
+				var x = $("#money").val().replace("R$ ", "");
+				var orderData = {
+					quantity: 1,
+					description: $("#message").val(),
+					price: parseFloat(x.replace(",", "."))
+				};
+				console.log(orderData)
 
-			var client = JSON.parse(localStorage.getItem('client'))
-			var x = $("#money").val().replace("R$ ", "");
-			var orderData = {
-				quantity: 1,
-				description: $("#message").val(),
-				price: parseFloat(x.replace(",", "."))
-			};
-			console.log(orderData)
-
-			fetch(getUri() + "cash/create_preference", {
-				method: "POST",
-				mode: 'cors',
-				cache: 'default',
-				headers: {
-					"Content-Type": "application/json",
-					"Authorization": "Bearer " + client.token
-				},
-				body: JSON.stringify(orderData),
-			}).then(function (response) {
-				if (response.status == 200) {
-					return response.json();
-				} else {
-					throw Error("Erro http")
-				}
-			}).then(function (preference) {
-				createCheckoutButton(preference.id);
-			}).catch(function (err) {
-				console.log(err)
-				alert("Unexpected error");
-				$('#submit').css("display", "block");
-				$('#button-checkout').css("display", "none");
-				$('#processando').css("display", "none");
-			});
+				fetch(getUri() + "cash/create_preference", {
+					method: "POST",
+					mode: 'cors',
+					cache: 'default',
+					headers: {
+						"Content-Type": "application/json",
+						"Authorization": "Bearer " + client.token
+					},
+					body: JSON.stringify(orderData),
+				}).then(function (response) {
+					if (response.status == 200) {
+						return response.json();
+					} else {
+						throw Error("Erro http")
+					}
+				}).then(function (preference) {
+					createCheckoutButton(preference.id);
+				}).catch(function (err) {
+					console.log(err)
+					alert("Unexpected error");
+					$('#submit').css("display", "block");
+					$('#button-checkout').css("display", "none");
+					$('#processando').css("display", "none");
+				});
+			} else {
+				alert('Erro com servidor de pagamento, tente novamente mais tarde')
+			}
 		});
 	});
 
