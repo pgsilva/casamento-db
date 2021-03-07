@@ -76,7 +76,7 @@
 				$('#submit').css("display", "none");
 				$('#status_server').css("display", "block");
 			}
-		}, 500);
+		}, 1500);
 
 
 		$('.popup-gallery').magnificPopup({
