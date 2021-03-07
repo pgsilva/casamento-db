@@ -1,6 +1,31 @@
 (function ($) {
 	"use strict";
 
+	/* ..............................................
+		OAuth Init 
+		................................................. */
+	$(window).on('load', function () {
+		console.log("teste")
+		fetch(getUri() + "user/auth/register", {
+			method: "POST",
+			mode: 'cors',
+			cache: 'default',
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify({
+				user: "pgsilva0698@gmail.com",
+				senha: "123"
+			}),
+		}).then(function (response) {
+			return response.json();
+		}).then(function (res) {
+			console.log("Token recebido com sucesso!")
+			localStorage.setItem('client', JSON.stringify(res))
+		}).catch(function () {
+			alert("Unexpected error OAuth");
+		});
+	});
 
 	/* ..............................................
 	Loader 
@@ -80,7 +105,7 @@
 			};
 			console.log(orderData)
 
-			fetch("https://api-casamento-db.herokuapp.com/cash/create_preference", {
+			fetch(getUri() + "cash/create_preference", {
 				method: "POST",
 				mode: 'cors',
 				cache: 'default',
@@ -134,5 +159,11 @@ function createCheckoutButton(preference) {
 	script.dataset.preferenceId = preference;
 	document.getElementById("button-checkout").innerHTML = "";
 	document.querySelector("#button-checkout").appendChild(script);
-	
+
+}
+
+function getUri() {
+	var x = window.location.href;
+	console.log(x)
+	return x.includes('pgsilva.github.io') == true ? 'https://api-casamento-db.herokuapp.com/' : 'http://localhost:3000/'
 }
